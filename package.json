@@ -1,0 +1,27 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "funny programming",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KimSoapSoap/wetube.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "author": "soapsoap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KimSoapSoap/wetube/issues"
+  },
+  "homepage": "https://github.com/KimSoapSoap/wetube#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}
