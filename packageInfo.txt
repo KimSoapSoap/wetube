@@ -1,0 +1,12 @@
+
+@babel/node는 프로젝트 폴더에 설치하니까
+내외부 어쩌고 떠서 -g 를 붙여서 글로벌로 설치했다
+해결하려면 윈도우 환경변수 설정을 해줘야 한다
+package 문제로 헤매지 않기 위해 글로벌 설치한 건 기록
+
+project 폴더에 설치하고 package.json에 정상 표시됐지만
+에러 떠서 실제로는 -g 로 설치한 것이 작동중
+
+npm install -g --save-dev @babel/node   
+
+

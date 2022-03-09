@@ -19,8 +19,8 @@
 #  specify a folder with slash in the end
 #  ignore all files in any directory named temp
 #  temp/
-study/
-node_modules/
+/study
+/node_modules
 
 #  ignore doc/notes.txt, but not doc/server/arch.txt
 #  bin/*.txt
