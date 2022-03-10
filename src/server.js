@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 
 const PORT = 2080;
 const app = express();
@@ -53,6 +54,7 @@ const handleContact = (req, res) => {
 const handleLogin = (req, res) => {
   return res.sendFile(__dirname + "/test.html");
 };
+app.use(logger("dev"));
 app.use(urlLogger);
 app.use(timeLogger);
 app.use(securityLogger);
