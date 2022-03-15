@@ -1,0 +1,18 @@
+extends base
+include mixins/video
+
+
+
+
+block content 
+    h2 Welcome here you will sese the trending videos 
+    each banana in mixinsPractice
+        +mixinVideo(banana)
+    ul 
+        each potato in videosArrObj
+            li #{potato.title}
+    ul
+        each tomato in videos
+            li=tomato
+        else 
+            li sorry video is not found
