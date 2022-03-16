@@ -1,18 +1,25 @@
 extends base
 include mixins/video
-
-
-
-
+block header 
+    if fakeUser.loggedIn
+        small Hello #{fakeUser.username}
+    else 
+        small Hello
+    ul
+        if fakeUser.loggedIn
+            li 
+                a(href="/logout") Log out
+        else
+            li 
+                a(href="/login") Login
+block header2
+    nav
+        ul
+            li 
+                a(href="/videos/upload") upload video
 block content 
     h2 Welcome here you will sese the trending videos 
-    each banana in mixinsPractice
+    each banana in videos
         +mixinVideo(banana)
-    ul 
-        each potato in videosArrObj
-            li #{potato.title}
-    ul
-        each tomato in videos
-            li=tomato
-        else 
-            li sorry video is not found
+    else 
+        li sorry video is not found
