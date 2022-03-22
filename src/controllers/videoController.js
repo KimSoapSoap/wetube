@@ -22,7 +22,7 @@ export const home = (req, res) => {
 //이건 promise로 await async 방식으로 한 것
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({ createdAt: "asc" });
     console.log(videos);
     return res.render("home", {
       pageTitle: "Home",
@@ -38,10 +38,13 @@ export const watch = async (req, res) => {
   // const id = req.params.id;
   const { id } = req.params;
   const video = await Video.findById(id);
-  console.log(video, id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
   return res.render("watch", {
     pageTitle: video.title,
     video,
+    hashtags: video.hashtags,
   });
 };
 export const getEdit = async (req, res) => {
@@ -49,9 +52,26 @@ export const getEdit = async (req, res) => {
   const video = await Video.findById(id);
   return res.render("edit", { pageTitle: `Editing ${video.title}`, video });
 };
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
+  const { title, description, hashtags } = req.body;
+  // const video = await Video.findById(id);
+  const video = await Video.exists({ _id: id });
+  if (!video) {
+    return res.render("404", { pageTitle: "video not found." });
+  }
+  // video.title = title;
+  // video.description = description;
+  // video.hashtags = hashtags
+  //   .split(",")
+  //   .map((word) => (word.startsWith("#") ? word.trim() : `#${word.trim()}`));
+  await Video.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: Video.formatHashtags(hashtags),
+    //   hashtags: hashtags.split(",").map((word) => `#${word.trim()}`),
+  });
+
   return res.redirect(`/videos/${id}`);
 };
 export const getUpload = (req, res) => {
@@ -63,8 +83,9 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title,
       description,
+      hashtags: Video.formatHashtags(hashtags),
       // createdAt: Date.now(),
-      hashtags: hashtags.split(",").map((word) => `#${word.trim()}`),
+      // hashtags: hashtags.split(",").map((word) => `#${word.trim()}`),
       // meta: {
       //   views: 0,
       //   rating: 0,
@@ -78,6 +99,21 @@ export const postUpload = async (req, res) => {
     });
   }
 };
-export const search = (req, res) => res.send("Search Video");
-export const deleteVideo = (req, res) => res.send("Delete Video");
-export const upload = (req, res) => res.send("Upload Video");
+export const deleteVideo = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  // delete video
+  return res.redirect("/");
+};
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: { $regex: new RegExp(`${keyword}`) },
+    });
+    // return res.render("search", { pageTitle: "Search", videos });
+  }
+  console.log(keyword);
+  return res.render("search", { pageTitle: "Search", videos });
+};
