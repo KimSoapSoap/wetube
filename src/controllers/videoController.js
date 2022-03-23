@@ -23,7 +23,6 @@ export const home = (req, res) => {
 export const home = async (req, res) => {
   try {
     const videos = await Video.find({}).sort({ createdAt: "asc" });
-    console.log(videos);
     return res.render("home", {
       pageTitle: "Home",
       fakeUser,
@@ -110,7 +109,7 @@ export const search = async (req, res) => {
   let videos = [];
   if (keyword) {
     videos = await Video.find({
-      title: { $regex: new RegExp(`${keyword}`) },
+      title: { $regex: new RegExp(`${keyword}$`, "i") },
     });
     // return res.render("search", { pageTitle: "Search", videos });
   }
