@@ -11,13 +11,22 @@ html(lang="ko")
                 ul
                     li 
                         a(href="/") &larr; Home 
+                    if loggedIn
+                        li
+                            a(href="/user-profile") #{loggedInUser.name}
                     li 
                         a(href="/videos/upload") upload video &uarr;            
                     li
                         a(href="/search") Search
-                    li
-                        a(href="/join") Join
-                        
+                    if !loggedIn
+                        li
+                            a(href="/join") Join
+                        li 
+                            a(href="/login") Login   
+                    else 
+                        li 
+                            a(href="/logout") Log Out   
+
             block header2                     
         main            
             block content 
